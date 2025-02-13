@@ -1,6 +1,6 @@
 # JavaScript Course Assignments Repository
 
-Welcome to the JavaScript Course Assignments repository! This collection showcases various projects and assignments completed as part of a JavaScript class. Each project demonstrates key JavaScript concepts, including DOM manipulation, event handling, and interactive web development.
+Welcome to the JavaScript Course Assignments repository! This collection showcases various projects and assignments completed as part of a JavaScript class taken in 2020. Each project demonstrates key JavaScript concepts, including DOM manipulation, event handling, and interactive web development.
 
 ## 📂 Included Assignments
 
