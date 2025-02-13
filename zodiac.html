@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Your Zodiac Sign!</title>
+<!--     Name: juejue Mu
+    Section: A -->
+    <script>
+        var firstName = "";
+        var lastName = "";
+        var year = 0;
+        var month = 0;
+        var day = 0;
+
+        function askName(){
+            document.getElementsByTagName("h1")[0].innerHTML = "";
+            document.getElementsByTagName("h2")[0].innerHTML = "What is your name?";
+            document.getElementsByTagName("p")[0].innerHTML += '<p>First Name: <input id = "first" type = "text"></p><p>Last Name: <input id = "last" type = "text"></p>';
+            document.getElementById("button").innerHTML = '';
+            document.getElementById("button").innerHTML = '<button style="font-size: 38px; border-radius: 50px; padding: 7px 38px;font-family: monospace; color:rgb(94, 7, 94);" onclick="askBirthday()">Next</button>';
+         
+        }
+
+        function askBirthday(){
+            firstName = document.getElementById("first").value;
+            lastName = document.getElementById("last").value;   
+            document.getElementsByTagName("h2")[0].innerHTML = "Hello there, " + firstName + " " + lastName + "<br>";
+            document.getElementsByTagName("h2")[0].innerHTML += "When's your birthday?";
+            document.getElementsByTagName("p")[0].innerHTML = '<p>Year: &nbsp <input id="year" type="text" placeholder ="XXXX"></p><p>Month: <input id="month" type="text" placeholder ="XX"></p><p>Day: &nbsp&nbsp&nbsp<input id="day" type="text" placeholder ="XX"></p>';
+            document.getElementById("button").innerHTML = '';
+            document.getElementById("button").innerHTML = '<button style="font-size: 38px; border-radius: 50px; padding: 7px 38px;font-family: monospace; color:rgb(94, 7, 94);" onclick="askAge()">Next</button>';
+        }
+
+        function askAge(){
+            year = document.getElementById("year").value;
+            month = document.getElementById("month").value;
+            day = document.getElementById("day").value; 
+            var nowAge =  ageCalculate(year, month, day);  
+            document.getElementsByTagName("h2")[0].innerHTML = "You are now " + nowAge + " years old.";
+            document.getElementsByTagName("p")[0].innerHTML = '<p>Are you ready to see your zodiac signs in different cultures?<br><br>We cover three traditions here: <br>1. The traditional Western zodiac<br>2. The Chinese zodiac<br>3. Hindu zodiac, or  Vedic astrology</p>';
+            document.getElementById("button").innerHTML = '';
+            document.getElementById("button").innerHTML = '<button style="font-size: 38px; border-radius: 50px; padding: 7px 38px;font-family: monospace; color:rgb(94, 7, 94);" onclick="askZodiac()">Result</button>';               
+        }
+
+        function askZodiac(){
+            var zodiacW = westernZodiac(month, day);
+            var zodiacC = chineseZodiac(year);
+            var zodiacH = hinduZodiac(month, day);
+            document.getElementById("canvas").innerHTML="";
+            document.getElementById("canvas").innerHTML="<div style='margin: 60px 0px;'><p style='float : left; width: 225px; margin: 15px 0px; text-alignment: left; padding: 0px'>Western tradition:<br><span style='font-size: 30px; padding-top: 5px;'>" + zodiacW + "</span></p><p style='float : left; width: 200px; margin: 15px; text-alignment: center'>Chinese tradition:<br><span style='font-size: 30px; padding-top: 5px;'>" + zodiacC + "</span></p><p style='float : left; width: 220px; margin: 15px 20px; text-alignment: center'>Hindu tradition: <br><span style='font-size: 30px; padding-top: 5px;'>" + zodiacH + "</span></p></div>"
+            document.getElementById("button").innerHTML = '';
+            document.getElementById("button").innerHTML = '<button style="font-size: 38px; border-radius: 50px; padding: 7px 38px;font-family: monospace; color:rgb(94, 7, 94);" onclick="restart()">Restart</button>';     
+        }
+
+        function westernZodiac(b, c){
+            if (b==1){
+                if (c<=19){return "Capricorn"; } else{return "Aquarius"; }
+            } else if (b==2){
+                if (c<=18){return "Aquarius";  } else{return "Pisces";  }
+            } else if (b==3){
+                if (c<=20){return "Pisces";  } else{return "Aries";  }
+            } else if (b==4){
+                if (c<=19){return "Aries";  } else{return "Taurus";  }
+            } else if (b==5){
+                if (c<=20){return "Taurus";  } else{return "Gemini";  }
+            } else if (b==6){
+                if (c<=20){return "Gemini";  } else{return "Cancer";  }
+            } else if (b==7){
+                if (c<=22){return "Cancer";  } else{return "Leo";  }
+            } else if (b==8){
+                if (c<=22){return "Leo";  } else{return "Virgo";  }
+            } else if (b==9){
+                if (c<=22){return "Virgo";  } else{return "Libra";  }
+            } else if (b==10){
+                if (c<=22){return "Libra";  } else{return "Scorpio";  }
+            } else if (b ==11){
+                if (c<=21){return "Scorpio";  } else{return "Sagittarius";  }
+            } else if (b==12){
+                if (c<=21){return "Sagittarius  ";  } else{return "Capricorn";  }
+            }
+        }
+
+        function chineseZodiac(a){
+            if ((a-1924) % 12 == 0){return "Rat";
+            } else if ((a-1925) % 12 == 0){return "Ox";
+            } else if ((a-1926) % 12 == 0){return "Tiger";
+            } else if ((a-1927) % 12 == 0){return "Rabbit";
+            } else if ((a-1928) % 12 == 0){return "Dragon";
+            } else if ((a-1929) % 12 == 0){return "Snake";
+            } else if ((a-1930) % 12 == 0){return "Horse";
+            } else if ((a-1931) % 12 == 0){return "Goat";
+            } else if ((a-1932) % 12 == 0){return "Monkey";
+            } else if ((a-1933) % 12 == 0){return "Rooster";
+            } else if ((a-1934) % 12 == 0){return "Dog";
+            } else if ((a-1935) % 12 == 0){return "Pig";}
+        }
+
+        function hinduZodiac(b, c){
+            if (b==1){
+                if (c<=14){return "Sagittarius<br>(Dhanus)"; } else{return "Capricorn<br>(Makhara)"; }
+            } else if (b==2){
+                if (c<=13){return "Capricorn <br>(Makhara)";  } else{return "Aquarius <br>(Kumbha)";  }
+            } else if (b==3){
+                if (c<=14){return "Aquarius <br>(Kumbha)";  } else{return "Pisces <br>(Meena)";  }
+            } else if (b==4){
+                if (c<=14){return "Pisces <br>(Meena)";  } else{return "Aries <br>(Mesha)";  }
+            } else if (b==5){
+                if (c<=15){return "Aries <br>(Mesha)";  } else{return "Taurus <br>(Vrishabha)";  }
+            } else if (b==6){
+                if (c<=15){return "Taurus <br>(Vrishabha)";  } else{return "Gemini <br>(Mithuna)";  }
+            } else if (b==7){
+                if (c<=16){return "Gemini <br>(Mithuna)";  } else{return "Cancer <br>(Karkata)";  }
+            } else if (b==8){
+                if (c<=17){return "Cancer <br>(Karkata)";  } else{return "Leo <br>(Simha)";  }
+            } else if (b==9){
+                if (c<=17){return "Leo <br>(Simha)";  } else{return "Virgo <br>(Kanya)";  }
+            } else if (b==10){
+                if (c<=17){return "Virgo <br>(Kanya)";  } else{return "Libra <br>(Tula)";  }
+            } else if (b ==11){
+                if (c<=16){return "Libra <br>(Tula)";  } else{return "Scorpio <br>(Vrishchika)";  }
+            } else if (b==12){
+                if (c<=16){return "Scorpio <br>(Vrishchika)";  } else{return "Sagittarius <br>(Dhanus)";  }
+            }
+        }
+
+        function ageCalculate(y, m, d){
+            var today = new Date();
+            var nowYear = today.getFullYear();
+            var nowMonth = today.getMonth() + 1;
+            var nowDay = today.getDate();
+            var age = 0;
+            if (m < nowMonth){
+                age = nowYear - y;
+            } else if ((m == nowMonth) && (nowDay >= d)){
+                age = nowYear - y;
+            } else {
+                age = nowYear - y - 1;
+            }
+            return age;
+        }
+
+        function restart(){
+            document.getElementById("canvas").innerHTML="<h1 style='font-size: 65.5px'>What's Your <br> Zodiac Sign?</h1><h2></h2><p></p>";
+            document.getElementById("button").innerHTML = '<button style="font-size: 38px; border-radius: 50px; padding: 7px 38px;font-family: monospace; color:rgb(94, 7, 94);" onclick="askName()">Test</button>';  
+        }
+
+    </script>
+</head>
+<body>
+    <div id="welcome" style=" 
+    position: relative;
+	width: 800px;
+	height: 400px;
+	overflow: hidden;
+	margin: 50px auto 0 auto;
+	background-image: url('https://sites.miis.edu/juejuemu/files/2020/03/background_1.png');
+    text-align: left;">
+        <div id="canvas" style="width: 800px; height: 248px; background-color: white; opacity: 0.7; padding: 0.1px 100px; font-family: Verdana, Geneva, Tahoma, sans-serif; color: rgb(94, 7, 94);">
+            <h1 style="font-size: 65.5px">What's Your <br> Zodiac Sign?</h1>
+            <h2></h2>
+            <p></p>
+        </div>
+        <div id="button" style="padding: 4.5% 39%; font-family: monospace;">
+            <button style="font-size: 38px; border-radius: 50px; padding: 7px 38px;font-family: monospace; color:rgb(94, 7, 94);" onclick="askName()">Test</button>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+
+    </script>
+</body>
+</html>

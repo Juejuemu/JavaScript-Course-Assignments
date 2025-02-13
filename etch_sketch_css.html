@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Sketch!</title>
+<!--Name: Juejue Mu 
+    Section: A -->
+
+    <style>
+        body, button, select{
+            font-family: monospace;
+            font-size: 18px;
+            line-height: 30px;
+        }
+        .pixel{
+            width: 20px;
+            height: 20px;
+            background-color:rgb(109, 203, 240);
+            float: left;
+        }
+        .pixel1{
+            width: 10px;
+            height: 10px;
+            background-color:rgb(109, 203, 240);
+            float: left;
+        }
+        .pixel2{
+            width: 40px;
+            height: 40px;
+            background-color:rgb(109, 203, 240);
+            float: left;
+        }
+        #canvas {
+            width: 600px;
+            margin: 2% 25%;
+        }
+        #user_interface{
+            width: 600px;
+            margin-left: 25%
+        }
+
+/*         button{
+            border-radius: 50%;
+            width: 130px;
+            height: 35px;
+        } */
+    </style>
+
+    <script>
+        function create_canvas(a, b, c){
+            for (j=0;j<a;j++){
+                for (i=0;i<b;i++){
+                    var newElement = document.createElement("div");
+                    newElement.setAttribute("class",c);
+                    newElement.addEventListener("mouseover", draw);
+                    document.getElementById("canvas").append(newElement);
+                }
+            }        
+        }
+
+        function draw(){
+            //this.setAttribute("class", "pen");
+            this.style = "background-color:rgb(177, 44, 62)";
+        }
+
+        function working_mode(time){
+            document.body.style.backgroundColor = time;
+        }
+
+        function display(color, size){
+            var working = document.getElementById("theme").value;
+            document.body.style.backgroundColor = working;
+            if (working == "#2c365c"){
+                document.body.style.color = "white";
+            }else{
+                document.body.style.color = "black";
+            }
+            document.getElementById("canvas").innerHTML = "";
+            var count = 0;
+            if (size ==10){
+                create_canvas(40, 60, "pixel1");
+                count = 2400;
+                change_color(color, count, "pixel1");
+            }else if (size == 40 ){
+                create_canvas(10, 15, "pixel2");
+                count = 150;
+                change_color(color, count, "pixel2");
+            }else {
+                create_canvas(20, 30, "pixel");
+                count = 600;
+                change_color(color, count, "pixel");
+            }
+
+           
+            //var size = document.getElementById("pen_size").value;
+             
+        }
+        function change_color(color, count, a){
+            for (i=0;i<count;i++){
+                document.getElementsByClassName(a)[i].style.backgroundColor = color;
+            }
+        }
+        function erase(){
+            document.getElementById("canvas").innerHTML = "";
+            create_canvas(20, 30, "pixel");
+            document.body.style.backgroundColor = "white";
+        }
+    </script>
+
+
+</head>
+<body>
+    <div id="canvas">
+    </div>
+    <div id="user_interface">
+        <br>Don't forget to click 'set' button to confirm your changes to the setting
+        <br><b>SETTINGs:</b><br>
+        <select id="theme">
+            <option>Working mode</option>
+            <option value="#f0f0c7">Day</option>
+            <option value="#f2ab6d">Noon</option>
+            <option value="#ed8094">Sunset</option>
+            <option value="#2c365c">Night</option>
+            <option value="white">Default</option>
+        </select>
+        &nbsp <select id="pen_size">
+            <option>Pen size</option>
+            <option value="10">Small</option>
+            <option value="20">Medium</option>
+            <option value="40">Big</option>
+        </select>
+        &nbsp Canvas color: <input type="color" id="pen_color" value="#56c3c4">
+        &nbsp <button onclick="display(pen_color.value, pen_size.value)"> set </button>
+        <button onclick="erase()"> Default </button>
+
+    </div>
+    <script>
+        create_canvas(20, 30, "pixel");
+    </script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--name: Juejue Mu 
+    Section: A -->
+    <title>Address Book</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dokdo&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+        #bookcover{
+            z-index: 1;
+            width: 750px;
+            height: 530px;
+            background-color: rgb(56, 35, 17);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.6);  
+        }
+        #clip{
+            z-index: 2;
+            position: relative;
+            width:70px;
+            height: 90px;
+            background:-webkit-linear-gradient(top, rgb(212, 168, 85) 5%, #FDE08D 10%,rgb(228, 182, 97),rgb(228, 182, 97),rgb(228, 182, 97),rgb(233, 180, 82),rgb(233, 180, 82), rgb(233, 180, 82));
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.3);  
+            margin-left: 43%;
+            margin-top: 3%;
+        }
+        #clipText{
+            font-family: 'Great Vibes', cursive;
+            text-align: center;
+            font-size: 21px;
+            padding-top: 60px;
+            text-shadow: 1px 1px 3px grey;
+            color:rgba(141, 107, 43, 0.8);
+        }
+        .paper{
+            background-color: rgb(245, 245, 229);
+            width: 300px;
+            height: 500px;
+            margin-left: 2px;
+            margin-right: 2px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 10px 20px 0 rgba(0, 0, 0, 0.6);          
+        }
+        .paperlid{
+            width:2px;
+            height: 500px;
+            background-color: rgb(245, 245, 229);
+        }
+        #input_display{
+            float: left;
+        }
+        h1{
+            margin-top: 25px;
+            font-family: 'Dokdo', cursive;
+            text-align: center;
+            color: rgb(248, 119, 72);
+        }
+        input[type=text] {
+            border: none;
+            margin-top:20px;
+            background-color: rgb(245, 245, 229);
+            border-bottom: 1px solid rgb(248, 119, 72);
+            font-family: 'Dosis', sans-serif;
+            text-align: center;
+
+        }
+        input[type=text]:first-child {
+            margin-top: 40px;
+        }
+        select{
+            background-color: rgb(245, 245, 229);
+            margin-left: 28px;
+            margin-top: 50px;
+            border-color: rgb(248, 119, 72);
+        }
+        input[type=radio]{
+            margin-top: 8px;
+            margin-left: 110px;
+            font-family: 'Dosis', sans-serif;
+        }
+        input[type=radio]:first-child{
+            margin-top: 50px;
+            margin-left: 5px;
+        }
+        label{
+            margin-left: 35px;
+            font-family: 'Dosis', sans-serif;
+        }
+        option, .radio_button, p, select{
+            font-family: 'Dosis', sans-serif;
+        }
+        #items{
+            width: 250px;
+            height: 300px;
+            margin-left: 30px;
+            font-family: 'Indie Flower', cursive;
+            margin-top: 30px;
+        }
+        #pageNum{
+            z-index: 2;
+            font-family: 'Dokdo', cursive;
+            font-size: 25px;
+            position: absolute;
+            top: 82%;
+            left: 71%;
+            transform: translate(-50%, -50%);
+            color:rgb(248, 119, 72);
+        }
+    </style>
+    <script>
+    class People{
+        constructor(){
+            this.gender = "Dr.";
+            this.status = "single";
+            this.firstName = "Luka";
+            this.lastName = "Waka";
+            this.phone = "800-123-4567";
+            this.email = "lukawaka@163.com";
+        } inputInfo(g, s, f, l, p, e){
+
+            this.gender = g;
+            this.status = s;
+            this.firstName = f;
+            this.lastName = l;
+            this.phone = p;
+            this.email = e;
+        }showInfo(){
+            page = Math.ceil((num/5));
+            if ( ( (num-1) % 5==0 ) && ( num != 1 )){
+                alert("The page has been used up, let's turn to the next page.");
+                document.getElementById("items").innerHTML = ""; 
+                document.getElementById("pageNum").innerHTML = page;
+            }
+            document.getElementById("items").innerHTML += num + ". " + this.gender + " " + this.firstName +" " + this.lastName + ", " + this.status + "<br>" + this.phone + ", " + this.email + "<br><span style='color: rgb(248, 119, 72);'>-------------------------------</span><br>";
+            num++;
+        }
+    }
+
+    function validate_phone(p){
+        var checkPhone = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+        if ( (checkPhone.test(p)) == false ){
+            errorMsg += "Please enter a valid phone number. \n";
+        }
+        return checkPhone.test(p);
+    }
+    function validate_email(e){
+        var checkEmail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+        if ( (checkEmail.test(e)) == false ){
+            errorMsg += "Please enter a valid email. \n";
+        }
+        return checkEmail.test(e);
+    }
+    function getRadioValue(){
+        var ele = document.getElementsByName('gender');             
+            for(i = 0; i < ele.length; i++) { 
+                if(ele[i].checked){
+                    var gender = ele[i].value;
+                } 
+            } 
+        return gender;
+    }
+
+    people = new People;
+    
+    function add_it(f, l, p, e){
+        errorMsg = "";
+        var email = validate_email(e);
+        var phone = validate_phone(p);
+        if ( (email == true) && (phone == true) ){
+            var g = getRadioValue();
+            var s = document.getElementById("status").value
+            people.inputInfo(g,s,f,l,p,e);
+            people.showInfo();
+        } else {
+            alert(errorMsg);
+            return;
+        }
+        errorMsg = "";
+        document.getElementById("firstName").innerHTML = "";
+    }
+
+    </script>
+</head>
+<body>
+    <div id="bookcover">
+        <div class="paperlid"></div>
+        <div id="user_input" class="paper">
+            <form action="#" name="traveler" autocomplete="on">
+            <select id="status">
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Engaged">Engaged</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Other">Other</option><br>
+            </section>
+            <br><input name="gender" type="radio" value="Dr." style="margin-left: 14px;"> <span class="radio_button">Dr.</span><br>
+            <input name="gender" type="radio" value="Ms."> <span class="radio_button">Ms.</span><br>
+            <input name="gender" type="radio" value="Mrs."> <span class="radio_button">Mrs.</span><br>
+            <input name="gender" type="radio" value="Mr."> <span class="radio_button">Mr.</span><br>
+            <input name="gender" type="radio" value="Decline to State"> <span class="radio_button">Decline to State</span><br>
+            <label>First Name: <input type="text" size="23px" id="firstName" value="Noda" required></label><br>
+            <label>Last Name: <input type="text" size="23px" id="lastName" value="Yojiro" required></label><br>
+            <label>Phone: <input type="text" size="28px" id="phone" value="800-123-1234" required></label><br>
+            <label>Email: <input type="text" size="29px" id="email" value="middlbury@miis.edu" required></label><br>
+            </form>
+        </div>
+        <div id="input_display" class="paper">
+            <h1>My Address Book</h1>
+            <p id=items></p>
+        </div>
+        <div class="paperlid"><p></p></div>
+    </div>
+    <div id="clip"  onclick="add_it(firstName.value, lastName.value, phone.value, email.value)"><p id="clipText">Add it</p></div>
+    <p id=pageNum></p>
+    
+    <script>
+        var errorMsg = "";
+        var num = 1;
+        var page = 1;
+        document.getElementById("pageNum").innerHTML = page;
+    </script>    
+</body>
+</html>

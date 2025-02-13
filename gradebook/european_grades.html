@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superheroes' Highschool Grades</title>
+    <!--Name: Juejue Mu
+        Section: A -->
+
+    <style>
+     /* table css reference:(https://www.w3schools.com/html/html_tables.asp)  */
+        body{
+            background-image: url("https://images-na.ssl-images-amazon.com/images/I/81lDBX4ikML._AC_SL1500_.jpg");  
+        }
+        p{
+            background-color: rgba(88, 79, 79, 0.384);
+            padding: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.6); 
+        }
+        #book{
+            margin-top: 20px;
+            margin-left: 280px;
+            width: 750px
+        }
+        table{
+            width: 750px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.6); 
+        }
+        table, th, td{
+            border-bottom: 1px solid rgb(190, 184, 184);
+            border-collapse: collapse;
+        }
+        th {
+            padding: 15px; 
+        }
+        td {
+            padding: 5px;
+            text-align: center;
+        }
+        td:first-child{
+            text-align: left;
+        }
+        table tr:nth-child(even) {
+            background-color: #eee;
+        }
+        table tr:nth-child(odd) {
+            background-color: #fff;
+        }
+        table th {
+            color: white;
+            background-color: black;
+        }
+    </style>
+
+    <script src="euroGrades.js" type="text/javascript"></script>
+    
+    <script>
+        
+        function getAverage(data){
+            var average = parseFloat(( parseInt( data[1] ) + parseInt( data[2] ) + parseInt( data[3] ) + parseInt( data[4] ) + parseInt( data[5]) ) / 5 );
+            return average.toFixed(2);
+        }
+        function dataProcess(data){
+            for (i=0;i<data.length;i++){
+                var b = data[i].split("@");
+                var a = [];
+                var c = [];
+                for (j=0;j<b.length;j++){
+                    if (b[j].indexOf("©") >= 0){
+                        c = b[j].split("©")
+                        for (x=0;x<c.length;x++){
+                                a.push(c[x]);
+                        }
+                    }else {
+                        a.push(b[j]);
+                    }
+                }
+                var aver = getAverage(a); 
+                studentData = { name: a[0],average: aver, grade1: a[1], grade2: a[2], grade3: a[3], grade4: a[4], grade5: a[5]};
+                gradeBook.push(studentData);
+            }
+        }
+        // generate table; reference: (https://www.valentinog.com/blog/html-table/)
+        function showGrades(){
+            dataProcess(dataStream);
+            for (let element of gradeBook){
+                var row = table.insertRow();
+                for (key in element) {
+                    var cell = row.insertCell();
+                    var text = document.createTextNode(element[key]);
+                    cell.appendChild(text);
+                    if ( element[key] < 12 ){
+                        cell.style.color = "red";
+                    }   
+                    if  ( element[key] >= 18 ) {
+                        cell.style.color = "rgb(121, 185, 25)";
+                    } 
+                }
+            }
+
+        }
+        function toEN(){
+            document.getElementById("intro").innerHTML = "Do you know how many superheros went to school abroad? Yeah, most people don't realize it because they've been so well localized. Here are the high school grades from a number of famous Avengers, X-Men, and Justice Leaguers. Wanna help me figure out their grades?";
+            document.getElementById("th1").innerHTML = "Student Name";
+            document.getElementById("th2").innerHTML = "Average Grade";
+            document.getElementById("th3").innerHTML = "Grade1";
+            document.getElementById("th4").innerHTML = "Grade2";
+            document.getElementById("th5").innerHTML = "Grade3";
+            document.getElementById("th6").innerHTML = "Grade4";
+            document.getElementById("th7").innerHTML = "Grade5";
+            }
+        function toJa(){
+            document.getElementById("intro").innerHTML = "海外に学校に通ったスーパーヒーローの数を知っていますか？ええ、彼らはとてもローカライズされているので、ほとんどの人はそれを理解していません。有名なアベンジャーズ、X-メン、ジャスティスリーグの高校生の成績を以下に示します。彼らの成績を把握する手助けをしたいですか？";
+            document.getElementById("th1").innerHTML = "学生の名前";
+            document.getElementById("th2").innerHTML = "平均評価";
+            document.getElementById("th3").innerHTML = "グレード1";
+            document.getElementById("th4").innerHTML = "グレード2";
+            document.getElementById("th5").innerHTML = "グレード3";
+            document.getElementById("th6").innerHTML = "グレード4";
+            document.getElementById("th7").innerHTML = "グレード5";
+
+        }
+        function toZh(){
+            document.getElementById("intro").innerHTML = "你知道有多少超级英雄去国外读书吗？是的，大多数人没有意识到这一点，因为它们已经本地化了。以下是一些著名的复仇者联盟，X战警和正义联盟的高中成绩。想帮助我弄清楚他们的成绩吗？";
+            document.getElementById("th1").innerHTML = "学生姓名";
+            document.getElementById("th2").innerHTML = "平均成绩";
+            document.getElementById("th3").innerHTML = "成绩一";
+            document.getElementById("th4").innerHTML = "成绩二";
+            document.getElementById("th5").innerHTML = "成绩三";
+            document.getElementById("th6").innerHTML = "成绩四";
+            document.getElementById("th7").innerHTML = "成绩五";
+        }
+        function toRu(){
+            document.getElementById("intro").innerHTML = "Вы знаете, сколько супергероев ходили в школу за границей? Да, большинство людей не понимают этого, потому что они были так хорошо локализованы. Вот оценки средней школы от ряда известных Мстителей, Людей Икс и Лиги Справедливости. Хотите помочь мне выяснить их оценки?";
+            document.getElementById("th1").innerHTML = "Имя студента";
+            document.getElementById("th2").innerHTML = "Средняя оценка";
+            document.getElementById("th3").innerHTML = "класс1";
+            document.getElementById("th4").innerHTML = "класс2";
+            document.getElementById("th5").innerHTML = "класс3";
+            document.getElementById("th6").innerHTML = "класс4";
+            document.getElementById("th7").innerHTML = "класс5";
+        }
+    </script>
+
+</head>
+<body onload="showGrades();">
+
+    <div id = "book">
+        <button id="button1" onclick="toEN()">English</button>
+        <button id="button2" onclick="toRu()">русский</button>
+        <button id="button3" onclick="toJa()">日本語</button>
+        <button id="button4" onclick="toZh()">中文</button>
+        <p id="intro"></p>
+        <table id="table">
+            <tr>
+                <th id="th1"></th>
+                <th id="th2"></th>
+                <th id="th3">Grade1</th>
+                <th id="th4">Grade2</th>
+                <th id="th5">Grade3</th>
+                <th id="th6">Grade4</th>
+                <th id="th7">Grade5</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        var dataStream = gimmeGrades();
+        var gradeBook = [];
+        var studentData = { name: "", average : 0, grade1 : 0, grade2 : 0, grade3 : 0, grade4 : 0, grade5: 0};
+        var table = document.getElementById("table");
+        document.getElementById("intro").innerHTML = "Do you know how many superheros went to school abroad? Yeah, most people don't realize it because they've been so well localized. Here are the high school grades from a number of famous Avengers, X-Men, and Justice Leaguers. Wanna help me figure out their grades?";
+        document.getElementById("th1").innerHTML = "Student Name";
+        document.getElementById("th2").innerHTML = "Average Grade";
+        document.getElementById("th3").innerHTML = "Grade1";
+        document.getElementById("th4").innerHTML = "Grade2";
+        document.getElementById("th5").innerHTML = "Grade3";
+        document.getElementById("th6").innerHTML = "Grade4";
+        document.getElementById("th7").innerHTML = "Grade5";
+
+    </script>
+    
+</body>
+</html>

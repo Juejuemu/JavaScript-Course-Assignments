@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Reservation</title>
+    <script src="airport.js" type="text/javascript"></script>
+<!--Name: Juejue Mu 
+    Section: A -->
+<!-- website design reference:https://flight.qunar.com/ -->
+    <style>
+        #info{
+            background-image:url(https://www.washingtonpost.com/resizer/BFBuAVXVDsrpV62koV3fog225JQ=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/YFNYN7TRYRCDROUUD3SHQVSVEU.jpg);
+            height: 294px;
+            border-top: rgb(0,175,199) 2px solid;
+        }
+        .infobox {
+            width: 355px;
+            height: 226px;
+            border: rgb(0,175,199) 5px solid;
+            float: left;
+            padding: 20px;
+            margin: 36px;
+            margin-top: 20px;
+            background-color: white;
+        }
+        .infobox:first-child{
+            width: 368px;
+        }
+        .infobox1{
+            width: 355px;
+            height: 226px;
+            border: rgb(0,175,199) 5px solid;
+            float: left;
+            padding: 20px;
+            margin: 36px;
+            margin-top: 20px;
+            background-color: white;
+        }
+        .infobox1:first-child{
+            width: 270px;
+        }
+        h1{
+            color: rgb(35,24,21);
+            font-family:monospace;
+            margin-left: 35px;
+            margin-bottom: 0;
+        }
+        h2{
+            color: rgb(35,24,21);
+            font-family: Arial, sans-serif;
+            font-weight: 200;
+            margin-left: 0px;
+            margin-top: -5px;
+        }
+        body{
+            font-family: Arial, sans-serif;
+            background-color: rgb(243,243,243);
+        }
+        fieldset{
+            background-color: rgb(245,251,253);
+            border: transparent;
+            border-top: rgb(151,211,217) 1px solid;
+            height: 180px;
+        }
+        input[type=text], input[type=date]{
+            margin-top: 13px;
+            height: 20px;
+        }
+        select{
+            height: 30px;
+            margin-top: 13px;
+        }
+        #button{
+            margin-left: 210px;
+            margin-top: 10px;
+            background-color: rgb(255,86,34);
+            border: transparent;
+            font-size: 18px;
+            padding: 6px 22px;
+            color: white;
+            border-radius: 2px;
+        }
+        .options:hover{
+            float: left;
+            width: 860px;
+            margin-left: 36px;
+            background-color: white;
+            margin-top: -2px;
+            padding: 30px 20px;
+            margin-bottom: 5px;
+            box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 15px 0 rgba(0, 0, 0, 0.2);  
+        }
+        .options{
+            float: left;
+            width: 860px;
+            margin-left: 36px;
+            background-color: white;
+            margin-top: -0px;
+            padding: 30px 20px;
+            margin-bottom: 5px;
+        }
+        .sidebar{
+            float: left;
+            width: 860px;
+            margin-left: 36px;
+            background-color: white;
+            margin-top: -7px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        header{
+            background-color: white;
+            padding: 6px;
+            padding-bottom: 2px;
+        }
+        .flightNum, .localTime2, .duration, .price{
+            float: left;
+            width: 170px;
+        }
+        .flightNum{
+            font-size: 20px;
+        }
+        .localTime1{
+            font-size: 30px;
+            float: left;
+            width: 140px;
+        }
+        .duration{
+            font-size: 17px;
+            border-bottom: rgb(177, 170, 170) dotted 1px;
+            text-align: center;
+            margin-right: 40px;
+            color: rgb(136, 127, 127);
+        }
+        .localTime2{
+            font-size: 30px;
+        }
+        .price{
+            font-size: 27px;
+            color:  rgb(255,86,34);
+        }
+        .language{
+            background-color: white;
+            color: black;
+            border: white 0px;
+            font-weight:bold;
+            font-size: 14px;
+        }
+        .language:first-of-type{
+            margin-left: 85%;
+        }
+
+    </style>
+
+    <script>
+        function getAge(){
+            var d = new Date();
+            var year = d.getFullYear();
+            var month = d.getMonth() + 1;
+            var date = d.getDate();
+            var bDay = document.getElementById("bDay").value.split("-");
+            if ((bDay[0]=="")||(bDay[1]=="")||(bDay[2]=="")){alert("Enter traveler's age to see if there is any discount can be applied.");}
+            var bYear = bDay[0];
+            var bMonth = bDay[1];
+            var bDate = bDay[2];
+            if (bMonth > month) {
+                age = year - 1 - bYear;
+            } else if ((bMonth == month) && (bDate > date)){
+                age = year -1 - bYear;
+            } else {
+                age = year - bYear;
+            }
+        }
+        function getDestination(){
+            destination = document.getElementById("destination").value;
+        }
+        function getAddress(){
+            var gender = document.getElementsByName("gender");
+            for (i=0; i < gender.length; i++){
+                if (gender[i].checked){
+                    address = gender[i].value;
+                }
+            }
+        }
+        function getTravelDay(){
+            var datesChosen = document.getElementsByName("day");
+            var travelDay = [];
+            for (i=0; i < datesChosen.length; i++){
+                if (datesChosen[i].checked){
+                    travelDay.push(datesChosen[i].value);
+                }
+            }
+            return travelDay;
+        }
+        function getLocalTime(time, place){
+            switch(place){
+                case "New York City": time -= 3; break;
+                case "Honolulu": time += 3; break;
+                case "Tokyo": time -=16; break;
+                case "Londan": time -= 8; break;
+                default: time -= 15; break;
+            }
+            if (time < 0) {
+                time += 24;
+            }
+            return time;
+        }
+        //reference(https://www.codeproject.com/Questions/1136427/How-to-calculate-the-total-duration-from-start-and)
+        function calculateDuration(time1, time2, place) {
+            var timeA = time1.split(":");
+            var timeB = time2.split(":");
+            var hour1 = parseInt(timeA[0]);
+            var min1 = parseInt(timeA[1]);
+            var hour2 = parseInt(timeB[0]);
+            var min2 = parseInt(timeB[1]);
+            hour2 = getLocalTime(hour2, place);
+            var hour = hour2 - hour1, min = 0;
+            if ( hour <= 0 ){
+                hour += 24;
+            }
+            if ( min2 >= min1){
+                min = min2 - min1;
+            } else {
+                min = min2 - min1 + 60;
+                hour--;
+            }
+            var duration;
+            if (min == 0){
+                duration = `${hour} h`;
+            } else{
+                duration = `${hour} h ${min} min`;
+            }
+            return duration;
+        }
+        function retrieveData(){
+            getDestination();
+            var dates = getTravelDay();
+            var flightString;
+            var msg = "";
+            var price;
+            var origin;
+            for (i=0;i<dates.length;i++){
+                var para;
+                var node;
+                var duration;
+                flightString = lookup(destination, dates[i]);
+                flightDetail = flightString.split("©")
+                /*msg = `Flight${i+1}: ${flightDetail[0]} departing on ${flightDetail[1]} at ${flightDetail[2]} and arriving in ${destination} at ${flightDetail[3]} for ${flightDetail[4]} USD
+                `;
+                para = document.createElement("div");
+                para.setAttribute("class", "options");
+                para.innerHTML = msg;
+                document.getElementById("options").appendChild(para); */
+                origin = flightDetail[4].split("$");
+                if (age < 2){
+                    switch(destination){
+                        case "New York City": price = "Free"; break;
+                        case "Honolulu": price = "Free"; break;
+                        default: price = "$ " + (Number(origin[1]) * 0.1).toFixed(2);
+                    }
+                } else {
+                    price = flightDetail[4];
+                }
+                duration = calculateDuration( flightDetail[2], flightDetail[3], destination);
+                para = document.createElement("div");
+                para.setAttribute("class", "options");
+                document.getElementById("options").appendChild(para);
+                para = document.createElement("div");
+                para.setAttribute("class", "flightNum");
+                para.innerHTML = flightDetail[1]+ ":<br>" + flightDetail[0];
+                document.getElementsByClassName("options")[i].appendChild(para);
+                para = document.createElement("div");
+                para.setAttribute("class", "localTime1");
+                para.innerHTML = flightDetail[2];
+                document.getElementsByClassName("options")[i].appendChild(para);
+                para = document.createElement("div");
+                para.setAttribute("class", "duration");
+                para.innerHTML = duration;
+                document.getElementsByClassName("options")[i].appendChild(para);
+                para = document.createElement("div");
+                para.setAttribute("class", "localTime2");
+                para.innerHTML = flightDetail[3];
+                document.getElementsByClassName("options")[i].appendChild(para);
+                para = document.createElement("div");
+                para.setAttribute("class", "price");
+                para.innerHTML = price;
+                document.getElementsByClassName("options")[i].appendChild(para);
+            }
+            
+        }
+        function greeting(first, last){
+            var para;
+            var node;
+            getAge();
+            getAddress();
+            getDestination();
+            if ((first == "") && (last == "")){
+                last = "traveler";
+            }
+            if (age <= 123){
+                greetMsg = `Flights for ${address} ${first} ${last}(age: ${age}) from Monterey, California to ${destination}`;
+            } else {
+                greetMsg = `Flights for ${address} ${first} ${last} from Monterey, California to ${destination}`;
+            }
+            para = document.createElement("div");
+            para.setAttribute("class", "sidebar");
+            para.innerHTML = greetMsg;
+            document.getElementById("sidebar").appendChild(para);
+        }
+        function search(first, last){
+            document.getElementById("sidebar").innerHTML = "";
+            document.getElementById("options").innerHTML = "";
+            greeting(first, last);
+            retrieveData();
+        }
+        function toEN(){
+            document.getElementsByTagName("h2")[0].innerHTML = "Traveler Info";            
+            document.getElementsByTagName("h2")[1].innerHTML = "Travel Info";
+            document.getElementsByTagName("label")[0].innerHTML = "First Name: ";
+            document.getElementsByTagName("label")[1].innerHTML = "Last Name: ";
+            document.getElementsByTagName("label")[2].innerHTML = "Birthday: &nbsp;&nbsp;&nbsp;&nbsp;";
+            document.getElementsByTagName("label")[3].innerHTML = "Designations: ";
+            document.getElementsByTagName("label")[4].innerHTML = "Days: ";
+            document.getElementById("male").innerHTML = "Male";
+            document.getElementById("gen").innerHTML = "Gender: ";
+            document.getElementById("fem").innerHTML = "Female";
+            document.getElementById("other").innerHTML = "Other";
+            document.getElementById("dec").innerHTML = "Decline to State"; 
+            document.getElementById("new").innerHTML = "New York City";
+            document.getElementById("holu").innerHTML = "Honolulu";
+            document.getElementById("bj").innerHTML = "Beijing";
+            document.getElementById("to").innerHTML = "Tokyo";
+            document.getElementById("ula").innerHTML = "Ulaanbaatar"; 
+            document.getElementById("lon").innerHTML = "London"; 
+            document.getElementById("honk").innerHTML = "Hong Kong"; 
+            document.getElementsByClassName("day")[0].innerHTML = "Sunday";
+            document.getElementsByClassName("day")[1].innerHTML = "Monday";
+            document.getElementsByClassName("day")[2].innerHTML = "Tuesday";
+            document.getElementsByClassName("day")[3].innerHTML = "Wednesday";
+            document.getElementsByClassName("day")[4].innerHTML = "Thursday";
+            document.getElementsByClassName("day")[5].innerHTML = "Friday";
+            document.getElementsByClassName("day")[6].innerHTML = "Saturday";
+            document.getElementById("button").innerHTML = "Search"; 
+            document.getElementsByClassName("infobox1")[0].setAttribute("class", "infobox");
+            document.getElementsByClassName("infobox1")[1].setAttribute("class", "infobox"); 
+        }
+        function toCN(){
+            document.getElementsByTagName("h2")[0].innerHTML = "购票人信息";            
+            document.getElementsByTagName("h2")[1].innerHTML = "购票信息";
+            document.getElementsByTagName("label")[0].innerHTML = "名：";
+            document.getElementsByTagName("label")[1].innerHTML = "姓：";
+            document.getElementsByTagName("label")[2].innerHTML = "生日：";
+            document.getElementsByTagName("label")[3].innerHTML = "目的地：";
+            document.getElementsByTagName("label")[4].innerHTML = "飞行时间：";
+            document.getElementById("male").innerHTML = "男";
+            document.getElementById("gen").innerHTML = "性别：";
+            document.getElementById("fem").innerHTML = "女";
+            document.getElementById("other").innerHTML = "其他";
+            document.getElementById("dec").innerHTML = "保密"; 
+            document.getElementById("new").innerHTML = "纽约";
+            document.getElementById("holu").innerHTML = "檀香山";
+            document.getElementById("bj").innerHTML = "北京";
+            document.getElementById("to").innerHTML = "东京";
+            document.getElementById("ula").innerHTML = "乌兰巴托"; 
+            document.getElementById("lon").innerHTML = "伦敦"; 
+            document.getElementById("honk").innerHTML = "香港"; 
+            document.getElementsByClassName("day")[0].innerHTML = "周日";
+            document.getElementsByClassName("day")[1].innerHTML = "周一";
+            document.getElementsByClassName("day")[2].innerHTML = "周二";
+            document.getElementsByClassName("day")[3].innerHTML = "周三";
+            document.getElementsByClassName("day")[4].innerHTML = "周四";
+            document.getElementsByClassName("day")[5].innerHTML = "周五";
+            document.getElementsByClassName("day")[6].innerHTML = "周六";
+            document.getElementById("button").innerHTML = "搜索";   
+            document.getElementsByClassName("infobox")[0].setAttribute("class", "infobox1");
+            document.getElementsByClassName("infobox")[1].setAttribute("class", "infobox1");        
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>MongoliAirwayS</h1>
+        <button class="language" onclick="toEN()">English</button>
+        <button class="language" onclick="toCN()">中文</button>
+    </header>
+    <div id="info">
+        <div id="traveler" class="infobox">
+            <h2></h2>
+            <fieldset>
+                <label for="firstName"></label>
+                <input type="text" name="firstName" id="firstName"><br>
+                <label for="lastName"></label>
+                <input type="text" name="lastName" id="lastName"><br>
+                <label for="bDay"></label><input name="bDay" type="date" id="bDay"><br>
+                <br><span id="gen">Gender: </span><br>
+                <input name="gender" type="radio" value="Mr."><span id="male"></span>
+                <input name="gender" type="radio" value="Ms."><span id="fem"></span>
+                <input name="gender" type="radio" value=""><span id="other"></span>
+                <input name="gender" type="radio" value=""><span id="dec"></span>
+            </fieldset>
+        </div>
+        <div id="airline" class="infobox">
+            <h2></h2>
+            <fieldset>
+                <label></label><select id="destination">
+                    <option value="New York City" id="new"></option>
+                    <option value="Honolulu" id="holu"></option>
+                    <option value="Hong Kong" id="honk"></option>
+                    <option value="Beijing" id="bj"></option>
+                    <option value="Tokyo" id="to"></option>
+                    <option value="Ulaanbaatar" id="ula"></option>
+                    <option value="London" id="lon"></option>
+                </select><br>
+                <br><label></label>
+                <input type="checkbox" name="day"  value="0"><span class="day"></span>
+                <input type="checkbox" name="day"  value="1"><span class="day"></span>
+                <input type="checkbox" name="day"  value="2"><span class="day"></span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="day"  value="3"><span class="day"></span></span>
+                <input type="checkbox" name="day"  value="4"><span class="day"></span></span>
+                <input type="checkbox" name="day"  value="5"><span class="day"></span></span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="day"  value="6"><span class="day"></span><br>
+                <button id="button" onclick="search(firstName.value, lastName.value)"></button>
+            </fieldset>
+        </div>
+        <div id="sidebar">
+        </div>
+        <div id="options">
+        </div>
+    </div>
+    <script>
+        toEN();
+        var age;
+        var greetMsg = "";
+        var address = "";
+        var destination = "";
+        var flightMsg = "";
+    </script>
+
+</body>
+</html>

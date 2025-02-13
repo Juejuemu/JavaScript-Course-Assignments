@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's play Blackjack</title>
+<!--Name: Juejue Mu 
+    Section: A -->
+    
+    <style>
+        #table{
+        background-color: rgba(26, 163, 44, 0.966);
+        width: 800px;
+        height: 450px;
+        margin: 4% 18%;
+        border-bottom-left-radius: 70%;
+        border-bottom-right-radius: 70%;
+        border-top-left-radius: 5%;
+        border-top-right-radius: 5%;
+        border: black 25px solid;
+        }
+
+        #dealer{
+            height: 170px;
+            margin-top: 3%;
+            position: relative;
+            margin-left: 30%;
+        }
+        
+        h1{
+            color: white;
+            font-family: monospace;
+            font-size: 50px;
+            text-align: center;
+            margin:0;
+        }
+
+        #player{
+            height: 170px;
+            margin-top: 3%;
+            position: relative;
+        }
+
+        .othercards{
+            float: left;
+            width: 95px;
+            height: 100px;
+            border-radius: 6%;
+            /* border:rgb(255, 229, 80) 3px solid; */
+        }
+        .cards{
+            float: left;
+            width: 95px;
+            height: 140px;
+            background-color: rgba(26, 163, 44, 0.966);
+            border-radius: 6%;
+            border:rgb(255, 229, 80) 3px solid;
+        }
+        .total{
+            float: left;
+            width: 95px;
+            height: 20px;
+            border-radius: 6%;
+            /* border:rgb(255, 229, 80) 3px solid; */
+        }
+        .decision1{
+            float: left;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 22px;
+            color: rgba(26, 163, 44, 0.966);
+            font-weight: bold;
+            font-family: monospace;
+            border:black 12px solid;
+            margin-top: 30px;
+        }
+        .decision{
+            float: left;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 25px;
+            color: rgba(26, 163, 44, 0.966);
+            font-weight: bold;
+            font-family: monospace;
+            border:black 12px solid;
+            margin-top: 90px;
+        }
+        p{
+            margin: 5px;
+            font-size: 21px;
+        }
+        .suit{
+            text-align: center;
+            font-size: 50px;
+        }
+        #player_other, #player_total, #dealer_other, #dealer_total{
+            color: rgb(255, 229, 80);
+            text-align: right;
+            font-family: monospace;
+        }
+    </style>
+    
+    <script>
+        //generate a deck of cards
+        function createCards(cardDeck){
+            var cardValues=[2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
+            var cardSuits=["♠","♥","♦","♣"];
+            for (i=0; i<4;i++){
+                for (j=0;j<13;j++){
+                    var cards = {
+                    cardValue: cardValues[j],
+                    cardSuit: cardSuits[i]
+                    }; 
+                    if (j < 8){
+                        cards.facevalue = j + 2;
+                    } else if ((j >= 8) && (j < 12)){
+                        cards.facevalue = 10;
+                    } else if ( j = 12){
+                        cards.facevalue = 11;
+                    }
+                    cardDeck.push(cards);
+                }
+            }
+        }
+        //first round of card drawing 
+        function drawCards(cardDeck){
+            var randomNum = 0;
+            for (i=0;i<2;i++){
+                randomNum = Math.floor((Math.random()*(cardDeck.length-1))) + 1;
+                playerCards.push(cardDeck[randomNum]);
+                cardDeck.splice(randomNum,1);
+            }
+            for (i=0;i<2;i++){
+                randomNum = Math.floor((Math.random()*(cardDeck.length-1))) + 1;
+                dealerCards.push(cardDeck[randomNum]);
+                cardDeck.splice(randomNum,1);
+            }
+        }
+        //create and deal the card
+        function deal(){
+            if ( playerCards.length != 2 && dealerCards.length != 2 ){
+                document.getElementsByClassName("cards")[0].style.backgroundColor = "white";
+                document.getElementsByClassName("cards")[1].style.backgroundColor = "white"; 
+                document.getElementsByClassName("cards")[0].style.borderColor = "black";
+                document.getElementsByClassName("cards")[1].style.borderColor = "black";          
+                createCards(cardDeck);
+                drawCards(cardDeck);
+                playervalue = countValue(playerCards);
+                dealervalue = countValue(dealerCards);
+                if (playerCards.length == 2 && dealerCards.length == 2){
+                    document.getElementById("player_card_value").innerHTML = playerCards[0].cardValue;
+                    document.getElementById("player_card_suit").innerHTML = playerCards[0].cardSuit;
+                    document.getElementById("dealer_card_value").innerHTML = dealerCards[0].cardValue;
+                    document.getElementById("dealer_card_suit").innerHTML = dealerCards[0].cardSuit;
+                    document.getElementById("player_other").innerHTML = playerCards[1].cardValue + playerCards[1].cardSuit;
+                    calculate();
+                }
+            }
+        }
+        function busted(){
+            playerstatus = "You are <span style='color: red;'><b>BUSTED</b></span>";
+            document.getElementsByTagName("h1")[0].innerHTML = playerstatus;
+        }
+        function won(){
+            playerstatus = "You <span style='color: rgb(255, 229, 80);'><b>WIN!!!</b></span>";
+            document.getElementsByTagName("h1")[0].innerHTML = playerstatus;
+        }
+
+        function calculate(){
+            if ( playervalue > 21 ){
+                busted();
+            } else if ( playervalue == 21 ) {
+                won();
+            } 
+            document.getElementById("player_total").innerHTML = playervalue; 
+        }
+
+        //second round of drawing cards
+        function hit(){
+            if (cardDeck.length > 0 && playerstatus != "You are <span style='color: red;'><b>BUSTED</b></span>" && playerstatus != "You <span style='color: rgb(255, 229, 80);'><b>WIN!!!</b></span>" ){
+                var randomNum = Math.floor((Math.random()*(cardDeck.length-1))) + 1;
+                playerCards.push(cardDeck[randomNum]);
+                document.getElementById("player_other").innerHTML += "<br>" + cardDeck[randomNum].cardValue + cardDeck[randomNum].cardSuit;
+                playervalue = countValue(playerCards);
+                calculate();
+                cardDeck.splice(randomNum,1);
+            }
+        }
+        // show deal's second card and results
+        function stay(){
+            if (playerstatus != "You are <span style='color: red;'><b>BUSTED</b></span>" && playerstatus != "You <span style='color: rgb(255, 229, 80);'><b>WIN!!!</b></span>" ){
+                dealervalue = countValue(dealerCards);
+                document.getElementById("dealer_total").innerHTML = dealervalue;
+                document.getElementById("dealer_other").innerHTML = dealerCards[1].cardValue + dealerCards[1].cardSuit;
+                while (dealervalue < 17){
+                    var randomNum = Math.floor((Math.random()*(cardDeck.length-1))) + 1;
+                    dealerCards.push(cardDeck[randomNum]);
+                    document.getElementById("dealer_other").innerHTML += "<br>" + cardDeck[randomNum].cardValue + cardDeck[randomNum].cardSuit;
+                    dealervalue = countValue(dealerCards);
+                    document.getElementById("dealer_total").innerHTML = dealervalue;
+                    cardDeck.splice(randomNum,1);
+                }
+                if (dealervalue > 21){
+                    won();
+                } else {
+                    if (( 21 - dealervalue ) < ( 21- playervalue )){
+                        playerstatus = "You <span style='color: red;'><b>LOSE :(</b></span>"; 
+                        document.getElementsByTagName("h1")[0].innerHTML = playerstatus;
+                    } else if (( 21 - dealervalue ) > ( 21- playervalue )){
+                        won();
+                    } else if (( 21 - dealervalue ) == ( 21- playervalue )){
+                        playerstatus = "It's a <span style='color: white;'><b>PUSH</b></span>"; 
+                        document.getElementsByTagName("h1")[0].innerHTML = playerstatus;
+                    }
+                }
+            } else if (playerstatus == "You are <span style='color: red;'><b>BUSTED</b></span>"){
+                playerstatus = "You <span style='color: red;'><b>LOSE :(</b></span>"; 
+                document.getElementsByTagName("h1")[0].innerHTML = playerstatus;
+            }
+        }
+
+        function countValue(set){
+            var totalValue = 0;
+            var ace_set = [];
+            for (i=0;i<set.length;i++){
+                if ( set[i].facevalue != 11){
+                    totalValue += set[i].facevalue;
+                } else{
+                    ace_set.push(11);
+                }
+            } 
+            if (ace_set.length > 0) {
+                for (i=0;i<ace_set.length;i++){
+                    if (( totalValue + 11 ) > 21){
+                        totalValue += 1;
+                    } else {
+                        totalValue += 11;
+                    }
+                }
+            }
+            return totalValue;
+        }
+        // test if there is an ace card
+        function aceCard(set){
+            var count=0;
+            for (i=0;i<set.length;i++){
+                if (set[i].facevalue == 11){
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        function restart(){
+            document.getElementsByClassName("cards")[0].style.backgroundColor = "rgba(26, 163, 44, 0.966)";
+            document.getElementsByClassName("cards")[1].style.backgroundColor = "rgba(26, 163, 44, 0.966)"; 
+            document.getElementsByClassName("cards")[0].style.borderColor = "rgb(255, 229, 80)";
+            document.getElementsByClassName("cards")[1].style.borderColor = "rgb(255, 229, 80)";
+            document.getElementById("player_other").innerHTML = "";
+            document.getElementById("player_total").innerHTML = ""; 
+            document.getElementById("dealer_other").innerHTML = ""; 
+            document.getElementById("dealer_total").innerHTML = ""; 
+            document.getElementById("player_card_value").innerHTML = "";
+            document.getElementById("player_card_suit").innerHTML = "";  
+            document.getElementById("dealer_card_value").innerHTML = "";
+            document.getElementById("dealer_card_suit").innerHTML = "";
+            document.getElementsByTagName("h1")[0].innerHTML = "BLACK JACK ♠♥♦♣";
+            cardDeck=[];        
+            dealerCards=[];
+            dealervalue=0;
+            playerCards=[];
+            playervalue=0;
+            playerstatus="";
+        }
+    </script>
+
+</head>
+
+<body>
+    <div id="table">
+        <div id="dealer">
+            <div class="othercards">
+                <p id="dealer_other"></p>
+            </div>
+            <div class="cards">
+                <p id="dealer_card_value" class="value"></p>
+                <p id="dealer_card_suit" class="suit"></p>
+            </div>
+            <div class="total">
+                <p id="dealer_total"></p>
+            </div>
+        </div>
+        <h1>BLACK JACK ♠♥♦♣</h1>
+        <div id="player">
+            <button class="decision1" onclick="deal()">Deal</button>
+            <button class="decision"  onclick="hit()">Hit</button>
+            <div class="othercards">
+                <p id="player_other"></p>
+            </div>
+            <div class="cards">
+                <p id="player_card_value" class="value"></p>
+                <p id="player_card_suit" class="suit"></p>
+            </div>
+            <div class="total">
+                <p id="player_total"></p>
+            </div>
+            <button class="decision" onclick="stay()">Stay</button>
+            <button class="decision1" onclick="restart()">Restart</button>
+        </div>     
+    </div>
+    <script>
+        var cardDeck=[];        
+        var dealerCards=[];
+        var dealervalue=0;
+        var dealerstatus="";
+        var playerCards=[];
+        var playervalue=0;
+        var playerstatus="";
+    </script>
+</body>
+</html>

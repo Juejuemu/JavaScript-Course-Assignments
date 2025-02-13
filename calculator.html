@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+<!--Name: Juejue Mu
+    Section: A -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dokdo&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+        #blackboard{
+            z-index: 1;
+            border: rgba(196, 154, 101, 0.993) 10px solid;
+            width: 700px;
+            height: 450px;
+            background-color: rgb(51,51,51);
+            font-family: 'Homemade Apple', cursive;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 10px 20px 0 rgba(0, 0, 0, 0.6); 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .demo{
+            background-color: rgb(51,51,51);
+            height: 30px;
+            margin: 10px;
+            color: white;
+            font-family: 'Homemade Apple', cursive;
+            font-size: 20px;
+            text-align: right;
+            border: transparent;
+            width:130px;
+        }
+        .demo:first-child{
+            margin-top: 110px;
+        }
+        #result{
+            width: 179px;
+            margin-left: 66px;
+            padding-top: 20px;
+            font-size: 30px;
+        } 
+        #result1{
+            width: 179px;
+            margin-left: 66px;
+            border-top: white solid 2px;
+            padding-top: 20px;
+            font-size: 30px;
+        }
+        #order{
+            float: left;
+            background-color: cornsilk;
+            width: 230px;
+            height: 270px;
+            margin-top: 70px;
+            margin-left: 60px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 10px 20px 0 rgba(0, 0, 0, 1);
+            color:rgb(51,51,51);
+            font-family: 'Indie Flower', cursive;
+            padding: 20px;
+            font-size: 17px;
+            font-weight: normal;
+        }
+        #pin{
+            position:absolute;
+            z-index: 2;
+            margin-top: 100px;
+            margin-left: 360px;
+            width: 60px;
+            height: 60px;
+            background-color: rgb(255, 239, 94);
+            border-radius: 50%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 10px 20px 0 rgba(0, 0, 0, 0.3); 
+        }
+        h2{
+            color: rgb(72, 202, 241);
+            font-size: 30px;
+            font-family: 'Dokdo', cursive;
+        }
+        .userInput{
+            background-color: cornsilk;
+            width: 90px;
+            border: transparent;
+            border-bottom: rgb(72, 202, 241) 0.5px solid;
+            font-family: 'Indie Flower', cursive;
+            font-size: 17px;
+            text-align: center;
+        }
+        #operation{
+            background-color: cornsilk;
+            border:rgb(72, 202, 241) 0.5px solid;
+        }
+        button{
+            background-color: rgb(255, 239, 94);
+            border:rgb(255, 239, 94) 0.5px solid;
+            color: rgb(72, 202, 241);
+            font-size: 20px;
+            font-family: 'Dokdo', cursive;
+        }
+        #opera{
+            float: left;
+            margin-top: 163px;
+            margin-left: 70px;
+        }
+        #operator{
+            width: 30px;
+            height: 27px;
+            background-color: rgb(51,51,51);
+            border: transparent;
+            color: white;
+            font-family: 'Homemade Apple', cursive;
+            font-size: 30px;
+        }
+        #num{
+            float: left;
+        }
+
+    </style>
+
+    <script>
+        function doCalculation(first, second){
+            var operation = document.getElementById("operation").value;
+            var result;
+            switch(operation){
+            case "+": result = addNum(first, second) ;break;
+            case "-": result = subNum(first, second);break;
+            case "X": result = multiNum(first, second);break;
+            case "÷": result = divideNum(first, second);break;
+            default: break;
+            }
+            document.getElementById("first").value = Number(first);
+            document.getElementById("second").value = Number(second);
+            document.getElementById("operator").value = operation;
+            if (document.getElementById("result")){
+                document.getElementById("result").value = result;
+            } else {
+                document.getElementById("result1").value = result;
+            }
+
+            document.getElementById("firstNum").value = "";
+            document.getElementById("secondNum").value = "";
+            document.getElementById("result").setAttribute("id", "result1");
+        }
+        function addNum(a, b){
+            a = Number(a);
+            b = Number(b);
+            var sum = a + b;
+            return sum;
+        }
+        function subNum(a, b){
+            a = Number(a);
+            b = Number(b);
+            var sub = a - b;
+            return sub;
+        }
+        function multiNum(a, b){
+            a = Number(a);
+            b = Number(b);
+            var multi = a * b;
+            return multi;
+        }
+        function divideNum(a, b){
+            a = Number(a);
+            b = Number(b);
+            var divide = a / b;
+            divide = divide.toFixed(2);
+            return divide;
+        }
+
+    </script>
+</head>
+<body>
+    <div id="pin"></div>
+    <div id="blackboard">
+        <div id="order">
+            <h2>Basic calculator</h2>
+            First number:&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" class="userInput" id="firstNum"><br>
+            Second number: <input type="number" class="userInput" id="secondNum"><br><br>
+            Operations: <select id="operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="X">x</option>
+                <option value="÷">÷</option>
+            </select>&nbsp;&nbsp;<button onclick="doCalculation(firstNum.value, secondNum.value)">Calculate</button>
+        </div>
+        <div id="calculator">
+            <div id=opera>
+                <input type="text" id="operator">
+            </div>
+            <div id="num">
+                <input type="number" class="demo" id="first"><br>
+                <input type="number" class="demo" id="second"><br>
+            </div>
+            <input type="number" class="demo" id="result"><br>
+        </div>
+
+    </div>
+
+    
+    <script>
+
+    </script>
+</body>
+</html>
