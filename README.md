@@ -4,17 +4,11 @@ Welcome to the JavaScript Course Assignments repository! This collection showcas
 
 ## 📂 Included Assignments
 
-### 🛫 Flight Ticket Order
-A simple web application to manage flight ticket bookings.
-
-### 📚 Gradebook
-A system for recording and displaying student grades.
+### 🔮 Zodiac Sign Finder
+An interactive webpage to determine a user's zodiac sign based on input.
 
 ### 🏠 Address Book
-A web-based contact management tool for storing and retrieving addresses.
-
-### ♦️ Blackjack
-A basic implementation of the Blackjack card game using JavaScript.
+A web-based interactive contact management tool for storing and retrieving addresses.
 
 ### 🔢 Calculator
 A functional, interactive calculator built with HTML, CSS, and JavaScript.
@@ -22,11 +16,17 @@ A functional, interactive calculator built with HTML, CSS, and JavaScript.
 ### 🎨 Etch-a-Sketch
 A web-based drawing application that mimics the classic Etch-a-Sketch toy.
 
+### ♦️ Blackjack
+A basic implementation of the Blackjack card game using JavaScript.
+
 ### 🃏 Five-Card Game
 A card-based game implementing JavaScript logic and interactivity.
 
-### 🔮 Zodiac Sign Finder
-An interactive tool to determine a user's zodiac sign based on input.
+### 🛫 Flight Ticket Order
+A simple webpage to manage flight ticket bookings.
+
+### 📚 Gradebook
+A simple webpage for recording and displaying student grades.
 
 ## 🚀 Getting Started
 1. Clone this repository:
